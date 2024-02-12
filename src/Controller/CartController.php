@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Cart;
 use App\Repository\CartRepository;
 use App\Service\CartValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,15 +12,15 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/cart')]
 class CartController extends AbstractController
 {
-    #[Route('/validate', methods: 'POST')]
+    #[Route('/validate')]
     public function validate(
         CartRepository $repository,
         CartValidator $validator,
     ): Response {
         // récupération du panier courant
-        $cart = $repository->find(1);
+        $cart = new Cart();
         $purchase = $validator->createPurchase($cart);
 
-        return $this->redirect('url de la page de règlement');
+        return $this->redirect('/');
     }
 }

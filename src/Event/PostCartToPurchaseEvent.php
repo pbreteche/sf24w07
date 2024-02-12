@@ -2,17 +2,17 @@
 
 namespace App\Event;
 
-use App\Entity\Cart;
 use App\Entity\Purchase;
+use Symfony\Contracts\EventDispatcher\Event;
 
-class PostCartToPurchaseEvent
+class PostCartToPurchaseEvent extends Event
 {
      public function __construct(
          private Purchase $purchase,
      ) {
      }
 
-    public function getPurchase(): Cart
+    public function getPurchase(): Purchase
     {
         return $this->purchase;
     }

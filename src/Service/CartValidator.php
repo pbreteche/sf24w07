@@ -6,14 +6,14 @@ use App\Entity\Cart;
 use App\Entity\Purchase;
 use App\Event\PostCartToPurchaseEvent;
 use App\Event\PreCartToPurchaseEvent;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 readonly class CartValidator
 {
     public function __construct(
         private LoggerInterface $logger,
-        private EventDispatcher $dispatcher,
+        private EventDispatcherInterface $dispatcher,
     ) {
 
     }
