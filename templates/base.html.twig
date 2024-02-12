@@ -12,6 +12,8 @@
         {% endblock %}
     </head>
     <body>
+        {{ render(controller('App\\Controller\\LocaleController::displayLocaleForm')) }}
+
         {% block body %}{% endblock %}
     </body>
 </html>
