@@ -20,12 +20,15 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/global-stats')]
+    #[Route('/admin/global-stats/{year<\d{4}>}')]
     public function heavyProcess(
         StatsProcessor $processor,
         CacheItemPoolInterface $pool,
+        int $year = null,
     ): Response {
-        $stats = $pool->get('app_default_heavyprocess', function (CacheItemInterface $item) use ($processor) {
+        $year ??= date('Y');
+
+        $stats = $pool->get(sprintf('app_default_heavyprocess_%04d', $year), function (CacheItemInterface $item) use ($processor) {
             $item->expiresAfter(new \DateInterval('PT1H'));
 
             return $processor->compute();
