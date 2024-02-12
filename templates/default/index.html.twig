@@ -5,5 +5,8 @@
 {% block body %}
 <div class="example-wrapper">
     <h1>Hello {{ controller_name }}! ✅</h1>
+
+    <p>Locale : {{ app.locale }}</p>
+    <p>Locale par défaut : {{ app.request.defaultLocale }}</p>
 </div>
 {% endblock %}
