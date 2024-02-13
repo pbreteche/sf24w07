@@ -19,3 +19,8 @@
 {% block t_shirt_size_label %}
    {{ block('form_label') }}  - notre bloc personnalisé
 {% endblock %}
+
+{% block duration_widget %}
+    {{ form_widget(form.hour) }}
+    {{ form_widget(form.minute) }}
+{% endblock %}

@@ -39,6 +39,9 @@ class TShirtType extends AbstractType
             ->add('color', ColorType::class, [
                 'required' => false,
             ])
+            ->add('duration', DurationType::class, [
+                'mapped' => false,
+            ])
             ->addEventSubscriber(new TShirtTypeSubscriber())
             ->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'preSubmit'])
         ;
