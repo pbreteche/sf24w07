@@ -31,7 +31,7 @@ class TShirt
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(length: 16, nullable: true, enumType: TShirtSize::class)]
-    private ?string $size = null;
+    private ?TShirtSize $size = null;
 
     public function getId(): ?int
     {
@@ -98,12 +98,12 @@ class TShirt
         return $this;
     }
 
-    public function getSize(): ?string
+    public function getSize(): ?TShirtSize
     {
         return $this->size;
     }
 
-    public function setSize(?string $size): static
+    public function setSize(TShirtSize $size): static
     {
         $this->size = $size;
 
