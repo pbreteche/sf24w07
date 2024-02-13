@@ -11,5 +11,7 @@
 
 {% block form_label_content %}
     {{ parent() }}
-    {% if required %}<span class="badge text-bg-warning">requis</span> {% endif %}
+    {% if checked is not defined and required %}
+        <span class="badge text-bg-warning">requis</span>
+    {% endif %}
 {% endblock %}
