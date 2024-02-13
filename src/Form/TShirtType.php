@@ -2,10 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\Enum\TShirtSize;
 use App\Entity\TShirt;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,8 +17,7 @@ class TShirtType extends AbstractType
             ->add('price')
             ->add('description')
             ->add('createdAt')
-            ->add('size', EnumType::class, [
-                'class' => TShirtSize::class,
+            ->add('size', TShirtSizeType::class, [
                 'placeholder' => '--',
             ])
         ;
