@@ -6,6 +6,7 @@ use App\Entity\Enum\TShirtSize;
 use App\Repository\TShirtRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TShirtRepository::class)]
 class TShirt
@@ -32,6 +33,10 @@ class TShirt
 
     #[ORM\Column(length: 16, nullable: true, enumType: TShirtSize::class)]
     private ?TShirtSize $size = null;
+
+    #[ORM\Column(length: 7, nullable: true)]
+    #[Assert\CssColor(formats: Assert\CssColor::HEX_LONG)]
+    private ?string $color = null;
 
     public function getId(): ?int
     {
@@ -106,6 +111,18 @@ class TShirt
     public function setSize(TShirtSize $size): static
     {
         $this->size = $size;
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): static
+    {
+        $this->color = $color;
 
         return $this;
     }
