@@ -11,30 +11,26 @@ class DurationTransformer implements DataTransformerInterface
     {
     }
 
-    /** From int to [int, int] */
+    /** From (int) minutes to (string) "hours:minutes" */
     public function transform(mixed $value): mixed
     {
         if (!$value || !is_int($value)) {
-            return ['hour' => 0, 'minute' => 0];
+            return '00:00';
         }
 
-        return [
-            'hour' => intdiv($value, 60),
-            'minute' => $value % 60,
-        ];
+        return sprintf('%02d:%02d', intdiv($value, 60), $value % 60);
     }
 
     public function reverseTransform(mixed $value): mixed
     {
         $errMessage = 'Value %s is not a valid duration.';
-
-        if (!$value || !is_array($value) || 2 != count($value)) {
+        if (!preg_match('#^(\d+):([0-5][0-9])$#', $value, $matches)) {
             $failure = new TransformationFailedException(sprintf($errMessage, $value));
             $failure->setInvalidMessage(sprintf($errMessage, $value));
 
             throw $failure;
         }
 
-        return $value['hour'] * 60 + $value['minute'];
+        return ((int) $matches[1]) * 60 + ((int) $matches[2]);
     }
 }
