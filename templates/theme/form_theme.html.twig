@@ -8,3 +8,8 @@
     <p>Saisissez le tarif en centimes</p>
     {{ block('form_label') }}
 {% endblock %}
+
+{% block form_label_content %}
+    {{ parent() }}
+    {% if required %}<span class="badge text-bg-warning">requis</span> {% endif %}
+{% endblock %}
