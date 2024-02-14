@@ -1,3 +1,10 @@
+{% apply inline_css %}
+<style>
+    p {
+        text-align: center;
+        color: lightgoldenrodyellow;
+    }
+</style>
 <p>
 Bonjour,
 </p>
@@ -10,3 +17,4 @@ une commande a été passée. Il s'agit de {{ phone_number | phone_number_format
     <img src="cid:logo">
     <img src="{{ email.image('@images/Logo_Dawan.svg') }}">
 </p>
+{% endapply %}
