@@ -2,13 +2,16 @@
 
 namespace App\Form\TypeGuesser;
 
+use App\Service\LocaleRegionMapper;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Guess;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ReflectionNamedTypeGuesser implements FormTypeGuesserInterface
 {
+    public function __construct (private readonly LocaleRegionMapper $mapper) {}
     public function guessType(string $class, string $property): ?Guess\TypeGuess
     {
         $type = $this->getReflectionType($class, $property);
@@ -18,7 +21,7 @@ class ReflectionNamedTypeGuesser implements FormTypeGuesserInterface
         }
 
         return match ($type->getName()) {
-            PhoneNumber::class => new Guess\TypeGuess(PhoneNumberType::class, [], Guess\Guess::VERY_HIGH_CONFIDENCE),
+            PhoneNumber::class => new Guess\TypeGuess(PhoneNumberType::class, ['default_region' => $this->mapper->getRegion()], Guess\Guess::VERY_HIGH_CONFIDENCE),
             default => null,
         };
     }
