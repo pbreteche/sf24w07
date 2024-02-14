@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\Cache;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
@@ -55,10 +57,22 @@ class DefaultController extends AbstractController
     #[Route('/demo-type-guesser', methods: ['GET', 'POST'])]
     public function demoTypeGuesser(
         Request $request,
+        MailerInterface $mailer,
     ): Response {
         $purchase = new Purchase();
         $form = $this->createForm(PurchaseType::class, $purchase);
         $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $message = (new Email())
+                ->to('recipient@example.com')
+                ->from('noreply@example.com')
+                ->subject('My subject')
+                ->text(sprintf('Phone number %s', $purchase->getCustomerPhone()->getNationalNumber()))
+            ;
+
+            $mailer->send($message);
+        }
 
         return $this->render('default/demo_type_guesser.html.twig', [
             'form' => $form,
