@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
@@ -81,6 +82,7 @@ class DefaultController extends AbstractController
                 ])
                 ->attach($attachedContent, 'filename.ext', 'text/plain')
                 ->attachFromPath('/dev/null')
+                ->addPart((new DataPart(fopen('/dev/null', 'r'), 'company-logo', 'image/webp'))->asInline())
             ;
 
             $mailer->send($message);
