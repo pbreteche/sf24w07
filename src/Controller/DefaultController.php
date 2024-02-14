@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Purchase;
+use App\Form\PurchaseType;
 use App\Service\StatsProcessor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\Attribute\Route;
@@ -47,5 +50,18 @@ class DefaultController extends AbstractController
         $pool->invalidateTags(['heavy_process']);
 
         return $this->json(['result' => $stats]);
+    }
+
+    #[Route('/demo-type-guesser', methods: ['GET', 'POST'])]
+    public function demoTypeGuesser(
+        Request $request,
+    ): Response {
+        $purchase = new Purchase();
+        $form = $this->createForm(PurchaseType::class, $purchase);
+        $form->handleRequest($request);
+
+        return $this->render('default/demo_type_guesser.html.twig', [
+            'form' => $form,
+        ]);
     }
 }
