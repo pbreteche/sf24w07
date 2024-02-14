@@ -66,6 +66,8 @@ class DefaultController extends AbstractController
         $form = $this->createForm(PurchaseType::class, $purchase);
         $form->handleRequest($request);
 
+        $attachedContent = 'file content';
+
         if ($form->isSubmitted() && $form->isValid()) {
             $deliverer->deliver($purchase);
             $message = (new TemplatedEmail())
@@ -77,6 +79,8 @@ class DefaultController extends AbstractController
                 ->context([
                     'phone_number' => $purchase->getCustomerPhone()
                 ])
+                ->attach($attachedContent, 'filename.ext', 'text/plain')
+                ->attachFromPath('/dev/null')
             ;
 
             $mailer->send($message);
