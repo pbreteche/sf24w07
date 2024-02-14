@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Purchase;
 use App\Form\PurchaseType;
+use App\Service\PurchaseDeliverer;
 use App\Service\StatsProcessor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,12 +59,14 @@ class DefaultController extends AbstractController
     public function demoTypeGuesser(
         Request $request,
         MailerInterface $mailer,
+        PurchaseDeliverer $deliverer,
     ): Response {
         $purchase = new Purchase();
         $form = $this->createForm(PurchaseType::class, $purchase);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $deliverer->deliver($purchase);
             $message = (new Email())
                 ->to('recipient@example.com')
                 ->from('noreply@example.com')
