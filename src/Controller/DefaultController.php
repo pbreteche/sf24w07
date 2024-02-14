@@ -6,6 +6,7 @@ use App\Entity\Purchase;
 use App\Form\PurchaseType;
 use App\Service\PurchaseDeliverer;
 use App\Service\StatsProcessor;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,11 +68,15 @@ class DefaultController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $deliverer->deliver($purchase);
-            $message = (new Email())
+            $message = (new TemplatedEmail())
                 ->to('recipient@example.com')
                 ->from('noreply@example.com')
                 ->subject('My subject')
-                ->text(sprintf('Phone number %s', $purchase->getCustomerPhone()->getNationalNumber()))
+                ->textTemplate('mail/purchase.txt.twig')
+                ->htmlTemplate('mail/purchase.html.twig')
+                ->context([
+                    'phone_number' => $purchase->getCustomerPhone()
+                ])
             ;
 
             $mailer->send($message);
