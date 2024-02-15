@@ -10,6 +10,7 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -63,6 +64,23 @@ class DemoCommand extends Command
             $progressBar->advance($step);
             $i += $step;
         }
+        if (!$output instanceof ConsoleOutputInterface) {
+            throw new \LogicException('This command accepts only an instance of "ConsoleOutputInterface".');
+        }
+        $section1 = $output->section();
+        $section2 = $output->section();
+
+        $io1 = new SymfonyStyle($input, $section1);
+        $io2 = new SymfonyStyle($input, $section2);
+
+        $io1->note('section 1');
+        $io2->note('section 2');
+        sleep(1);
+        $section1->clear();
+        $io1->warning('changement section 1');
+        sleep(1);
+        $io2->success('ajout section 2');
+
 
         $io->info('Les ventes de T-Shirt');
 
