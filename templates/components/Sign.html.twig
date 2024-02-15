@@ -1,0 +1,17 @@
+<div data-controller="sign">
+    <h2 class="text-gray-dawan">Dessiner ma signature et signer</h2>
+    <form method="post">
+        <div class="form-row">
+            <label for="signature-pad-canvas">Dessiner ma signature</label>
+            <canvas id="signature-pad-canvas" data-sign-target="input"></canvas>
+        </div>
+        <div class="form-row">
+            <button type="button" id="signature-pad-clear" class="form-btn-reset" data-action="click->sign#clear">
+                Effacer
+            </button>
+            <button name="draw-sign" id="signature-pad-validate" class="form-btn" data-sign-target="submitButton">
+                Signer
+            </button>
+        </div>
+    </form>
+</div>
