@@ -21,28 +21,31 @@ class TShirtRepository extends ServiceEntityRepository
         parent::__construct($registry, TShirt::class);
     }
 
-//    /**
-//     * @return Product[] Returns an array of Product objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function stat(string $metric, bool $bySize)
+    {
+        $queryBuilder = $this->createQueryBuilder('tshirt');
 
-//    public function findOneBySomeField($value): ?Product
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        switch ($metric) {
+            case 'quantity':
+                $queryBuilder->select('COUNT(tshirt) AS data');
+                break;
+            case 'avg':
+                $queryBuilder->select('AVG(tshirt.price) AS data');
+                break;
+            default:
+                $queryBuilder->select('SUM(tshirt.price) AS data');
+        }
+
+        if ($bySize) {
+            $queryBuilder
+                ->groupBy('tshirt.size')
+                ->addSelect('tshirt.size')
+            ;
+        }
+
+        return $queryBuilder
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Command;
 
+use App\Repository\TShirtRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -16,7 +18,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class DemoCommand extends Command
 {
-    public function __construct()
+     public const METRIC = [
+         'turnover',
+         'quantity',
+         'avg',
+     ];
+
+    public function __construct(
+        private readonly TShirtRepository $repository
+    )
     {
         parent::__construct();
     }
@@ -33,16 +43,23 @@ class DemoCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $arg1 = $input->getArgument('metric');
+        if (!in_array($arg1, self::METRIC)) {
+            $io->error('Choisir entre turnover, quantity ou avg');
 
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+            return Command::FAILURE;
         }
 
-        if ($input->getOption('by-size')) {
-            // ...
+        $stat = $this->repository->stat($arg1, $input->hasOption('by-size'));
+
+        $io->info('Les ventes de T-Shirt');
+
+        $table = new Table($output);
+        $table->setHeaders(['result', 'size']);
+        foreach ($stat as $value) {
+            $table->addRow([$value['data'], $value['size']->value]);
         }
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $table->render();
 
         return Command::SUCCESS;
     }
