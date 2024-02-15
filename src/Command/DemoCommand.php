@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
@@ -44,12 +45,14 @@ class DemoCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $arg1 = $input->getArgument('metric');
         if (!in_array($arg1, self::METRIC)) {
-            $io->error('Choisir entre turnover, quantity ou avg');
-
-            return Command::FAILURE;
+            $arg1 = $io->choice('Vous devez choisir parmi', self::METRIC);
         }
 
         $stat = $this->repository->stat($arg1, $input->hasOption('by-size'));
+
+        $fruitQuestion = new Question('Quel fruit ?');
+        $fruitQuestion->setAutocompleterValues(['Pomme', 'Poire', 'Myrtille']);
+        $io->askQuestion($fruitQuestion);
 
         $io->info('Les ventes de T-Shirt');
 
