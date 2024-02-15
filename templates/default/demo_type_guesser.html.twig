@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
 
+{% block importmap %}
+ {{ importmap(['app', 'map']) }}
+{% endblock %}
+
 {% block body %}
  {{ form(form) }}
+
+ <div id="map"></div>
 {% endblock %}
