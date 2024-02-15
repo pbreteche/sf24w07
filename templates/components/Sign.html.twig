@@ -1,4 +1,5 @@
-<div data-controller="sign">
+<div {{ stimulus_controller('sign') }}="sign"
+    data-sign-minLength-value="200" {{ attributes }}>
     <h2 class="text-gray-dawan">Dessiner ma signature et signer</h2>
     <form method="post">
         <div class="form-row">

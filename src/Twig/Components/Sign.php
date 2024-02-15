@@ -9,4 +9,5 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 final class Sign
 {
     use DefaultActionTrait;
+    public int $minLength = 20;
 }

@@ -12,6 +12,7 @@ import SignaturePad from "signature_pad";
  */
 export default class extends Controller {
     static targets = ['input', 'submitButton'];
+    static values = {maxLength: Number};
 
     connect() {
         this.signaturePad = new SignaturePad(this.inputTarget);
