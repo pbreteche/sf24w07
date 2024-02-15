@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Repository\TShirtRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -53,6 +54,15 @@ class DemoCommand extends Command
         $fruitQuestion = new Question('Quel fruit ?');
         $fruitQuestion->setAutocompleterValues(['Pomme', 'Poire', 'Myrtille']);
         $io->askQuestion($fruitQuestion);
+
+        $progressBar = new ProgressBar($output, 100);
+        $i = 0;
+        while ($i < 100) {
+            usleep(100000);
+            $step = rand(1, 5);
+            $progressBar->advance($step);
+            $i += $step;
+        }
 
         $io->info('Les ventes de T-Shirt');
 
