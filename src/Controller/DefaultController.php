@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Purchase;
 use App\Form\PurchaseType;
+use App\Service\HolidayAsker;
 use App\Service\PurchaseDeliverer;
 use App\Service\StatsProcessor;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -23,7 +24,9 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 class DefaultController extends AbstractController
 {
     #[Route]
-    public function index(): Response
+    public function index(
+        HolidayAsker $holidayAsker,
+    ): Response
     {
         return $this->render('default/index.html.twig', [
             'controller_name' => 'DefaultController',

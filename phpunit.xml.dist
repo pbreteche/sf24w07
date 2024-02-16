@@ -25,6 +25,5 @@
     </coverage>
 
     <extensions>
-        <bootstrap class="JohnKary\PHPUnit\Extension\SpeedTrap" />
     </extensions>
 </phpunit>
