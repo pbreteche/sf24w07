@@ -6,12 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TShirtControllerTest extends WebTestCase
 {
-
-    public function testEdit()
-    {
-
-    }
-
     public function testNew()
     {
         $client = static::createClient();
