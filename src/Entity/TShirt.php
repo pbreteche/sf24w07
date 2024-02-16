@@ -6,6 +6,7 @@ use App\Entity\Enum\TShirtSize;
 use App\Repository\TShirtRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TShirtRepository::class)]
@@ -17,25 +18,32 @@ class TShirt
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['t-shirt-index', 't-shirt'])]
     private ?string $referenceNumber = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['t-shirt-index', 't-shirt'])]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Groups(['t-shirt'])]
     private ?int $price = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['t-shirt'])]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Groups(['t-shirt'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(length: 16, nullable: true, enumType: TShirtSize::class)]
+    #[Groups(['t-shirt'])]
     private ?TShirtSize $size = null;
 
     #[ORM\Column(length: 7, nullable: true)]
     #[Assert\CssColor(formats: Assert\CssColor::HEX_LONG)]
+    #[Groups(['t-shirt'])]
     private ?string $color = null;
 
     public function getId(): ?int
