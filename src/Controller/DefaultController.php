@@ -26,8 +26,7 @@ class DefaultController extends AbstractController
     #[Route]
     public function index(
         HolidayAsker $holidayAsker,
-    ): Response
-    {
+    ): Response {
         return $this->render('default/index.html.twig', [
             'controller_name' => 'DefaultController',
         ]);
